@@ -7,7 +7,7 @@ const Form = () => {
    <div className="col-md-12 col-sm-12 col-xs-12">
     <form>
        
-     <h3>Datos del negocio</h3>
+     <h3>Datos de l negocio</h3>
      <hr className="base__hr"></hr>
         
      <div className="form-group col-lg-6">
