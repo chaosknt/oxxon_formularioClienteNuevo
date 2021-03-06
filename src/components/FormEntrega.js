@@ -10,12 +10,7 @@ const FormEntrega = ({   direccion,
                          setDelivery,
                          handleForm                         
                     }) => {
-
-    const handlePrev = () => {
-        setContact(true);
-        setDelivery(false);
-    }
-
+    
     const [isDisabled, setIsDisabled] = useState(true)
 
     const handleDisableButton = () => {
@@ -40,7 +35,7 @@ const FormEntrega = ({   direccion,
         <hr 
             className="base__hr"
         />
-
+                
         <div 
             className="form-group col-lg-6"
         >
@@ -73,7 +68,7 @@ const FormEntrega = ({   direccion,
             </span>
            
 
-        </div>
+        </div>        
 
         <div
              className="form-group col-lg-6"

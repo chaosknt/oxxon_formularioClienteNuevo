@@ -14,12 +14,14 @@ const App = () => {
         condicion_venta: '',
         cuit: ''
     });
-    
+        
     const {razon_social, condicion_venta, cuit } = formNegocio; 
 
     const [rubro, setRubro] = useState({
-        rubro:'Seleccione un rubro'
+        rubro:''
     });
+    
+    console.log(rubro.rubro)
 
     const updateRubro = ({ value }) => {
         setRubro({...rubro, rubro:value})
@@ -53,8 +55,15 @@ const App = () => {
      //formulario completo
     
     const handleForm = () => {
-       const  completedForm = {...formNegocio, ...rubro, ...localidad, ...formContacto, ...formEntrega};
-       console.log(completedForm);
+       const  completedForm = { ...formNegocio, 
+                                ...rubro, 
+                                ...localidad,
+                                ...formContacto,
+                                ...formEntrega,                                                              
+                                };
+
+       console.log(completedForm)
+       
     }
     
     return (
@@ -66,7 +75,8 @@ const App = () => {
                    <FormNegocio 
                         razon_social = { razon_social }
                         condicion_venta = { condicion_venta }
-                        cuit = { cuit }                        
+                        cuit = { cuit }   
+                        rubro = { rubro }                     
                         updateRubro = { updateRubro }
                         setFormNegocio = { setFormNegocio }                        
                         setBusiness = { setBusiness }

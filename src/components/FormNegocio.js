@@ -1,18 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import condicionVenta from '../data/condicionVenta';
 import rubros from '../data/rubro';
 import Select from 'react-select'
+import InputMask from "react-input-mask";
 
 const FormNegocio = ({ razon_social, 
                        condicion_venta,
-                       cuit,                       
+                       cuit,        
+                       rubro,               
                        updateRubro,
                        setFormNegocio,                       
                        setBusiness, 
                        setContact
                     }) => {
 
-    
+    const [showError, setShowError] = useState({
+        hasError: false,
+        showErrMsg:''
+    })
+
     const handleNext = ( e ) => {
         e.preventDefault();       
         if( isFormValid() )
@@ -23,22 +29,33 @@ const FormNegocio = ({ razon_social,
         return;
         
     }  
-
+             
     const isFormValid = () => {
 
-        if(razon_social.trim().length === 0){
+        if(razon_social.trim().length === 0)
+        {
+            setShowError({...showError, hasError:true, showErrMsg:"El campo Razon social es incorrecto."});
             return false;
         }
 
-        if(condicion_venta.trim().length === 0 || condicion_venta === "Condición de venta"){
+        if(condicion_venta.trim().length === 0 || condicion_venta === "Condición de venta")
+        {
+            setShowError({...showError, hasError:true, showErrMsg:"Debe elegir una condició de venta."});
             return false;
         }
 
-        if(cuit === 0){
+        if(cuit.replace(/_|-|/gi, "" ).length < 10)
+        {
+            setShowError({...showError, hasError:true, showErrMsg:"El Cuit ingresado debe tener 11 (once) caracteres"});
             return false;
         }
 
-        
+        if(rubro.rubro.length === 0 || rubro.rubro === "Seleccione un rubro")
+        {
+            setShowError({...showError, hasError:true, showErrMsg:"Debe elegir un rubro."});
+            return false;
+        }
+
         return true;
     }     
           
@@ -50,7 +67,12 @@ const FormNegocio = ({ razon_social,
                 <form onSubmit = { handleNext }>                
                     <h3 className="base__formTittle">Datos del negocio</h3>
                     <hr className="base__hr" /> 
-
+                    {showError.hasError && 
+                            <div class="alert alert-danger text-center" role="alert">
+                                    {showError.showErrMsg}
+                            </div>
+                    }
+                    
                     <div className="form-group col-lg-6">
 
                         <label 
@@ -124,7 +146,7 @@ const FormNegocio = ({ razon_social,
                             >*
                             </span>
                         </label>
-
+{/*
                         <input 
                             className="form-control" 
                             id="cuit" 
@@ -133,7 +155,19 @@ const FormNegocio = ({ razon_social,
                             type="number"
                             value = { cuit }
                             onChange = { setFormNegocio }                            
-                        />
+/>*/}
+                        <InputMask
+                        className="form-control" 
+                        placeholder="Ingrese su número de cuit"
+                        id="cuit" 
+                        name="cuit"
+                        value = { cuit }
+                        onChange = { setFormNegocio }
+                        mask="99-99999999-9"
+                        
+                          />
+
+                        
 
                         <span 
                             className="help-block" 
