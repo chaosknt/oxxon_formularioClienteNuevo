@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
+import localidades from '../data/localidades';
+import Select from 'react-select'
 
 const FormEntrega = ({   direccion, 
                          localidad,
                          entre_calles, 
                          setFormEntrega, 
                          setContact, 
-                         setDelivery 
+                         setDelivery,
+                         handleForm                         
                     }) => {
 
     const handlePrev = () => {
@@ -19,10 +22,16 @@ const FormEntrega = ({   direccion,
         setIsDisabled(!isDisabled);
     }
 
+    const handleSubmit = ( e ) => {
+        e.preventDefault();
+        handleForm();
+        
+    }
+  
     return (
   <div className="container-fluid row animate__animated animate__zoomIn base__mainContent">
    <div className="col-md-12 col-sm-12 col-xs-12">
-      <form>               
+      <form onSubmit = { handleSubmit }>               
         <h3 
             className="base__formTittle"
         >Datos de Entrega
@@ -49,8 +58,8 @@ const FormEntrega = ({   direccion,
 
             <input 
                 className="form-control" 
-                id="text1"
-                name="text1" 
+                id="direccion"
+                name="direccion" 
                 placeholder="Calle, altura, piso, dpto" 
                 type="text"
                 value = { direccion }
@@ -62,6 +71,7 @@ const FormEntrega = ({   direccion,
                 id="hint_text1"
             >Ingrese s&uacute; direccion completa.
             </span>
+           
 
         </div>
 
@@ -79,24 +89,19 @@ const FormEntrega = ({   direccion,
                 >*
                 </span>        
             </label>
-
-            <select 
-                className="select form-control"
-                id="localidad" 
-                name="localidad"
-                value = { localidad }
-                onChange = { setFormEntrega }
-            >
-            <option value="Ingrese su localidad">
-                Ingrese su localidad
-            </option>
-            <option value="Second Choice">
-                Second Choice
-            </option>
-            <option value="Third Choice">
-                Third Choice
-            </option>
-            </select>
+           
+            
+                          <Select 
+                          isLoading={true}
+                          placeholder = "Seleccione una Localidad"
+                          options={localidades}                           
+                          id="localidad" 
+                          name="localidad"
+                          value = { localidad }
+                           onChange = { setFormEntrega }
+                          />
+            
+           
             </div>
 
             <div 

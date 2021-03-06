@@ -7,7 +7,7 @@ import { useForm } from './hooks/useForm'
 
 
 const App = () => {
-
+                      
     //formulario de negocio
     const [business, setBusiness ] = useState(true);
     const [formNegocio, setFormNegocio] = useForm({
@@ -18,7 +18,7 @@ const App = () => {
     });
 
     const {razon_social, condicion_venta, cuit, rubro } = formNegocio;    
-    
+    console.log(formNegocio)
     //formulario de contacto
     const [contact, setContact] = useState(false)
     const [formContacto, setFormContacto] = useForm({
@@ -38,7 +38,13 @@ const App = () => {
 
     const { direccion, localidad, entre_calles } = formEntrega;  
 
-           
+     //formulario completo
+    
+    const handleForm = () => {
+       const  completedForm = {...formNegocio, ...formContacto, ...formEntrega};
+       console.log(completedForm);
+    }
+    
     return (
         <>
             <h3 className="base__MainTittle">Completá tus datos</h3>
@@ -76,6 +82,8 @@ const App = () => {
                          setFormEntrega = { setFormEntrega }
                          setDelivery = { setDelivery }
                          setContact = { setContact }
+                         handleForm = { handleForm }
+                         
                      />
                 }
                 
