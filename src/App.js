@@ -4,7 +4,13 @@ import FormEntrega from './components/FormEntrega'
 import FormNegocio from './components/FormNegocio'
 import { useForm } from './hooks/useForm'
 
-
+/*
+LIBRERIAS
+select 2 npm i --save react-select
+validator npm i --save react-select
+input  npm install react-input-mask --save
+saas npm i sass
+*/
 const App = () => {
                       
     //formulario de negocio
