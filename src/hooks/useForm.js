@@ -8,23 +8,12 @@ export const useForm = ( initialState = {}) => {
         setValues( initialState );
     }
 
-    const handleInputChange = ( {target} ) => {       
-        
+    const handleInputChange = ( { target }) => {       
         setValues({
             ...values,
             [ target.name ]: target.value
         });
     }
-
-    const handleInputChangeF = ( {name, value} ) => {        
-        //console.log(prop)
-        //esta funcion sirve para usar select2
-        setValues({
-            ...values,
-            [ name ]: value
-        });
-    }
-
 
     return [ values, handleInputChange, reset ];
 }

@@ -2,26 +2,31 @@ import React from 'react'
 
 const FormContacto = ({ email,
                         telefono, 
-                        setFormContacto,
-                        setBusiness, 
+                        setFormContacto,                       
                         setContact, 
                         setDelivery 
                       }) => {
 
     const handleNext = ( e ) => {
         e.preventDefault();
-        setContact(false);
-        setDelivery(true);
+        if( isFormValid() )
+        {
+          setContact(false);
+          setDelivery(true);
+        }
+        
     }
 
-    const handlePrev = () => {
-      setContact(false);
-      setBusiness(true);
-    }
+    const isFormValid = () => {
+
+          
+      return true;
+  }  
 
     return (
 <div className="container-fluid row animate__animated animate__zoomIn base__mainContent">
    <div className="col-md-12 col-sm-12 col-xs-12">
+     
         <form onSubmit = { handleNext }>                
         <h3 className="base__formTittle">Datos de Contacto</h3>
         <hr className="base__hr"></hr>
@@ -86,27 +91,17 @@ const FormContacto = ({ email,
             </span>
 
         </div>
-            
-        <div 
-            className="form-group col-lg-6 col-xs-6"
-        >      
-            <button 
-                className="btn btn-outline-danger" 
-                name="submit" 
-                onClick = { handlePrev }
-            >Anterior
-            </button>
+        <div className="form-group col-lg-6 col-xs-6 pull-right" />
           
-        </div>
-
         <div 
-            className="form-group col-lg-6 col-xs-6"
+            className="form-group col-lg-6 col-xs-6 pull-right"
           >      
 
           <button 
               className="btn btn-danger  btn-block"
               name="submit" 
               type="submit"
+              disabled = { isFormValid }
           >Siguiente
           </button>
 

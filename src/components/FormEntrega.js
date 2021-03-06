@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import localidades from '../data/localidades';
 import Select from 'react-select'
 
-const FormEntrega = ({   direccion, 
-                         localidad,
+const FormEntrega = ({   direccion,                          
                          entre_calles, 
                          setFormEntrega, 
+                         updateLocalidad,
                          setContact, 
                          setDelivery,
                          handleForm                         
@@ -97,8 +97,7 @@ const FormEntrega = ({   direccion,
                           options={localidades}                           
                           id="localidad" 
                           name="localidad"
-                          value = { localidad }
-                           onChange = { setFormEntrega }
+                          onChange = { updateLocalidad }
                           />
             
            
@@ -160,18 +159,8 @@ const FormEntrega = ({   direccion,
             </div>
         
         </div>
-
-        <div 
-            className="form-group col-lg-6 col-xs-6"
-        >
-       
-            <button 
-                className="btn btn-outline-danger"
-                onClick = { handlePrev }
-            >Anterior
-            </button>
         
-        </div>
+        <div className="form-group col-lg-6 col-xs-6 pull-right" />
 
         <div 
             className="form-group col-lg-6 col-xs-6"

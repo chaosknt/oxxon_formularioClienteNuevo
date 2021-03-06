@@ -1,19 +1,18 @@
 import React from 'react'
 import condicionVenta from '../data/condicionVenta';
 import rubros from '../data/rubro';
-import localidades from '../data/localidades';
 import Select from 'react-select'
 
 const FormNegocio = ({ razon_social, 
                        condicion_venta,
-                       cuit, 
-                       rubro,
-                       setFormNegocio,
+                       cuit,                       
+                       updateRubro,
+                       setFormNegocio,                       
                        setBusiness, 
                        setContact
                     }) => {
 
-                        
+    
     const handleNext = ( e ) => {
         e.preventDefault();       
         if( isFormValid() )
@@ -39,21 +38,10 @@ const FormNegocio = ({ razon_social,
             return false;
         }
 
-        if(rubro.trim().length === 0 || rubro === "Selecionar Rubro"){
-            return false;
-        }
+        
         return true;
-    }   
-
-    const test = ( e ) => {
-        console.log(e)
-        const target = {
-            name: "rubro",
-            value: e.value
-        }
-        setFormNegocio (target);
-    }
-    
+    }     
+          
     return (
 
         <div className="container-fluid row animate__animated animate__zoomIn base__mainContent">
@@ -174,9 +162,8 @@ const FormNegocio = ({ razon_social,
                           placeholder = "Seleccione un rubro"
                           options={ rubros }                           
                           id="rubro" 
-                          name="rubro"
-                          value = { rubro }
-                          onChange = { test }
+                          name="rubro"                         
+                          onChange = { updateRubro }
                         />
                         
 

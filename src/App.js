@@ -5,7 +5,6 @@ import FormNegocio from './components/FormNegocio'
 import { useForm } from './hooks/useForm'
 
 
-
 const App = () => {
                       
     //formulario de negocio
@@ -13,12 +12,19 @@ const App = () => {
     const [formNegocio, setFormNegocio] = useForm({
         razon_social: '',
         condicion_venta: '',
-        cuit: '',
-        rubro: ''
+        cuit: ''
+    });
+    
+    const {razon_social, condicion_venta, cuit } = formNegocio; 
+
+    const [rubro, setRubro] = useState({
+        rubro:'Seleccione un rubro'
     });
 
-    const {razon_social, condicion_venta, cuit, rubro } = formNegocio;    
-    console.log(formNegocio)
+    const updateRubro = ({ value }) => {
+        setRubro({...rubro, rubro:value})
+    }    
+    
     //formulario de contacto
     const [contact, setContact] = useState(false)
     const [formContacto, setFormContacto] = useForm({
@@ -31,17 +37,23 @@ const App = () => {
     //formulario de entrega
     const [delivery, setDelivery] = useState(false)
     const [formEntrega, setFormEntrega] = useForm({
-        direccion:'',
-        localidad:'',
+        direccion:'',        
         entre_calles:''
     });
 
-    const { direccion, localidad, entre_calles } = formEntrega;  
+    const { direccion, entre_calles } = formEntrega;  
 
+    const [localidad, setLocalidad] = useState({
+        localidad:'Seleccione una Localidad'
+    });
+
+    const updateLocalidad = ( { value }) => {
+        setLocalidad({ ...localidad, localidad: value })
+    }
      //formulario completo
     
     const handleForm = () => {
-       const  completedForm = {...formNegocio, ...formContacto, ...formEntrega};
+       const  completedForm = {...formNegocio, ...rubro, ...localidad, ...formContacto, ...formEntrega};
        console.log(completedForm);
     }
     
@@ -54,9 +66,9 @@ const App = () => {
                    <FormNegocio 
                         razon_social = { razon_social }
                         condicion_venta = { condicion_venta }
-                        cuit = { cuit }
-                        rubro = { rubro }
-                        setFormNegocio = { setFormNegocio }
+                        cuit = { cuit }                        
+                        updateRubro = { updateRubro }
+                        setFormNegocio = { setFormNegocio }                        
                         setBusiness = { setBusiness }
                         setContact = { setContact }
                    />
@@ -66,8 +78,7 @@ const App = () => {
                     <FormContacto
                          email = { email }
                          telefono = { telefono }
-                         setFormContacto = { setFormContacto }
-                         setBusiness = { setBusiness }
+                         setFormContacto = { setFormContacto }         
                          setContact = { setContact }
                          setDelivery = { setDelivery }
                     />
@@ -76,19 +87,17 @@ const App = () => {
                
                 { delivery &&  
                      <FormEntrega
-                         direccion = { direccion }
-                         localidad = { localidad }
+                         direccion = { direccion }                         
                          entre_calles = { entre_calles }
                          setFormEntrega = { setFormEntrega }
+                         updateLocalidad = { updateLocalidad }
                          setDelivery = { setDelivery }
                          setContact = { setContact }
                          handleForm = { handleForm }
                          
                      />
-                }
-                
-                
-               
+                }              
+                               
             </div>
         </>
     )
