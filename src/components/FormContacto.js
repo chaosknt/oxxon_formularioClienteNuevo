@@ -48,9 +48,9 @@ const FormContacto = ({ email,
         <hr className="base__hr"></hr>
 
         {showError.hasError && 
-                            <div class="alert alert-danger text-center" role="alert">
-                                    {showError.showErrMsg}
-                            </div>
+            <div class="alert alert-danger text-center" role="alert">
+                    {showError.showErrMsg}
+            </div>
         }
         
         <div className="form-group col-lg-6">

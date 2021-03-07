@@ -5,10 +5,17 @@ import Select from 'react-select'
 const FormEntrega = ({   direccion,                          
                          entre_calles, 
                          setFormEntrega, 
+                         localidad,
                          updateLocalidad,                         
                          handleForm                         
                     }) => {
     
+    
+    const [showError, setShowError] = useState({
+        hasError: false,
+        showErrMsg:''
+    });
+
     const [isDisabled, setIsDisabled] = useState(true)
 
     const handleDisableButton = () => {
@@ -17,13 +24,40 @@ const FormEntrega = ({   direccion,
 
     const handleSubmit = ( e ) => {
         e.preventDefault();
-        handleForm();
+
+        if( isFormValid() )
+        {
+            handleForm();
+        }        
         
     }
+   
+    const isFormValid = () => {
+
+        if( direccion.trim().length < 5 )
+        {
+          setShowError({...showError, hasError:true, showErrMsg:"Ha ingresado una dirección incorrecta."});
+              return false;
+        }
+        
+        if( localidad.localidad === -1 || localidad.localidad === "Seleccione una Localidad")
+        {
+            setShowError({...showError, hasError:true, showErrMsg:"Seleccione una localidad."});
+            return false;
+        }
+        if( entre_calles.trim().length < 3 )
+        {
+          setShowError({...showError, hasError:true, showErrMsg:"Por favor ingrese entre calles."});
+          return false;
+        }
+        
+        return true;
+    } 
   
     return (
   <div className="container-fluid row animate__animated animate__zoomIn base__mainContent">
    <div className="col-md-12 col-sm-12 col-xs-12">
+
       <form onSubmit = { handleSubmit }>               
         <h3 
             className="base__formTittle"
@@ -33,6 +67,12 @@ const FormEntrega = ({   direccion,
         <hr 
             className="base__hr"
         />
+
+        {showError.hasError && 
+            <div class="alert alert-danger text-center" role="alert">
+                    {showError.showErrMsg}
+            </div>
+        }
                 
         <div 
             className="form-group col-lg-6"
@@ -163,7 +203,7 @@ const FormEntrega = ({   direccion,
                 className="btn btn-danger  btn-block" 
                 name="submit" 
                 type="submit"
-                disabled = { isDisabled }
+                disabled = { isDisabled }                
             >Enviar
             </button>
        

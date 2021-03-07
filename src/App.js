@@ -104,9 +104,8 @@ const App = () => {
                          direccion = { direccion }                         
                          entre_calles = { entre_calles }
                          setFormEntrega = { setFormEntrega }
-                         updateLocalidad = { updateLocalidad }
-                         setDelivery = { setDelivery }
-                         setContact = { setContact }
+                         localidad = { localidad }
+                         updateLocalidad = { updateLocalidad }                         
                          handleForm = { handleForm }
                          
                      />
