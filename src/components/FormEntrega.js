@@ -1,6 +1,12 @@
 import React, { useState } from 'react'
 import localidades from '../data/localidades';
 import Select from 'react-select'
+import { errMsg } from '../strings/errMsg';
+import Title from './formComponents/Title';
+import { titles } from '../strings/titles';
+import Label from './formComponents/Label';
+import Input from './formComponents/Input';
+import Button from './formComponents/Button';
 
 const FormEntrega = ({   direccion,                          
                          entre_calles, 
@@ -11,10 +17,9 @@ const FormEntrega = ({   direccion,
                     }) => {
     
     
-    const [showError, setShowError] = useState({
-        hasError: false,
-        showErrMsg:''
-    });
+    const [showError, setShowError] = useState( {hasError: false, showErrMsg:''} );
+
+    const {err_direccion, err_localidad, err_entre_calles} = errMsg;
 
     const [isDisabled, setIsDisabled] = useState(true)
 
@@ -36,18 +41,18 @@ const FormEntrega = ({   direccion,
 
         if( direccion.trim().length < 5 )
         {
-          setShowError({...showError, hasError:true, showErrMsg:"Ha ingresado una dirección incorrecta."});
+          setShowError( {...showError, hasError:true, showErrMsg: err_direccion } );
               return false;
         }
         
         if( localidad.localidad === -1 || localidad.localidad === "Seleccione una Localidad")
         {
-            setShowError({...showError, hasError:true, showErrMsg:"Seleccione una localidad."});
+            setShowError( {...showError, hasError:true, showErrMsg: err_localidad} );
             return false;
         }
         if( entre_calles.trim().length < 3 )
         {
-          setShowError({...showError, hasError:true, showErrMsg:"Por favor ingrese entre calles."});
+          setShowError( {...showError, hasError:true, showErrMsg: err_entre_calles} );
           return false;
         }
         
@@ -55,163 +60,107 @@ const FormEntrega = ({   direccion,
     } 
   
     return (
-  <div className="container-fluid row animate__animated animate__zoomIn base__mainContent">
-   <div className="col-md-12 col-sm-12 col-xs-12">
 
-      <form onSubmit = { handleSubmit }>               
-        <h3 
-            className="base__formTittle"
-        >Datos de Entrega
-        </h3>
+    <div className="container-fluid row animate__animated animate__zoomIn base__mainContent">
+        <div className="col-md-12 col-sm-12 col-xs-12">
 
-        <hr 
-            className="base__hr"
-        />
+        <form onSubmit = { handleSubmit }>             
+           
+            <Title text = { titles.Entrega}/>
 
-        {showError.hasError && 
-            <div class="alert alert-danger text-center" role="alert">
-                    {showError.showErrMsg}
-            </div>
-        }
+            {showError.hasError && 
+                <div class="alert alert-danger text-center" role="alert">
+                        {showError.showErrMsg}
+                </div>
+            }
+                    
+          
+            <Input 
+
+                idValue = { "direccion"  }    
+                labelValue = { "Dirección" }
+                placeholderValue = { "Calle, altura, piso, dpto"  }
+                typeValue = { "text" }
+                inputValue = { direccion }
+                onChangeFunction = { setFormEntrega }    
+                        
+            />     
+
+             {/* Select with Search  */}
+            <div
+                className="form-group col-lg-6"
+            >              
+                <Label text = "Seleccione una opción" />
+            
                 
-        <div 
-            className="form-group col-lg-6"
-        >
-        
-            <label 
-                className="control-label requiredField" 
-                htmlFor="direccion"
-                >Direcci&oacute;n
-
-                <span
-                    className="base__asteriskField"
-                >*
-                </span>
-             </label>
-
-            <input 
-                className="form-control" 
-                id="direccion"
-                name="direccion" 
-                placeholder="Calle, altura, piso, dpto" 
-                type="text"
-                value = { direccion }
-                onChange = { setFormEntrega }
-            />
-            
-            <span 
-                className="help-block" 
-                id="hint_text1"
-            >Ingrese s&uacute; direccion completa.
-            </span>
-           
-
-        </div>        
-
-        <div
-             className="form-group col-lg-6"
-        >
-
-            <label 
-                className="control-label requiredField" 
-                htmlFor="localidad"
-                >Seleccione una opci&oacute;n
-
-                <span 
-                    className="base__asteriskField"
-                >*
-                </span>        
-            </label>
-           
-            
-                          <Select 
-                          isLoading={true}
-                          placeholder = "Seleccione o busque una Localidad"
-                          options={localidades}                           
-                          id="localidad" 
-                          name="localidad"
-                          onChange = { updateLocalidad }
-                          />
-            
-           
-            </div>
-
-            <div 
-                className="form-group col-lg-12"
-            >
-            <label 
-                className="control-label requiredField" 
-                htmlFor="entre_calles"
-                >Entre calles
-
-                <span 
-                    className="base__asteriskField"
-                >*
-                </span>
-            </label>
-
-            <input 
-                className="form-control" 
-                id="entre_calles" 
-                name="entre_calles"
-                placeholder="Entre calles" 
-                type="text"
-                value = { entre_calles }
-                onChange = { setFormEntrega }
-            />
-
-            <span 
-                className="help-block" 
-                id="hint_entre_calles"
-            >Ingrese las entre calles y/o  una referencia.
-            </span>
-
-        </div>
-        
-        
-        <div className="form-group col-lg-12">
-        
-            <div class="form-check">
-
-            <input 
-                type="checkbox" 
-                className="form-check-input" 
-                id="exampleCheck1"   
-                onClick = { handleDisableButton }   
+                <Select 
+                    isLoading={true}
+                    placeholder = "Seleccione o busque una Localidad"
+                    options={localidades}                           
+                    id="localidad" 
+                    name="localidad"
+                    onChange = { updateLocalidad }
+                />
                 
-                  
+            
+            </div>                
+
+            <Input 
+
+                idValue = { "entre_calles"  }                           
+                placeholderValue = { "Entre calles"  }
+                labelValue = { "Entre calles" }
+                typeValue = { "text" }
+                inputValue = { entre_calles }
+                onChangeFunction = { setFormEntrega } 
+                textSpan = { "Ingrese las entre calles y/o  una referencia." }   
+                    
             />
+            
+            
+            <div className="form-group col-lg-12">
+            
+                <div class="form-check">
 
-            <label 
-                className="form-check-label" 
-                htmlFor="exampleCheck1"
-            >   Acepto los <a href="#"> Términos y Condiciones </a> y autorizo el uso de mis datos
-             de acuerdo a la <a href="#"> Declaración de Privacidad.</a>            
-            </label>
+                <input 
+                    type="checkbox" 
+                    className="form-check-input"                     
+                    onClick = { handleDisableButton }  
+                />
+               
 
+                <label 
+                    className="form-check-label" 
+                    htmlFor="exampleCheck1"
+                >   Acepto los <a href="#"> Términos y Condiciones </a> y autorizo el uso de mis datos
+                de acuerdo a la <a href="#"> Declaración de Privacidad.</a>            
+                </label>
+
+                </div>
+            
             </div>
-        
-        </div>
-        
-        <div className="form-group col-lg-6 col-xs-6 pull-right" />
+            
+            <div className="form-group col-lg-6 col-xs-6" />
 
-        <div 
-            className="form-group col-lg-6 col-xs-6"
-        >
-        
-            <button 
-                className="btn btn-danger  btn-block" 
-                name="submit" 
-                type="submit"
-                disabled = { isDisabled }                
-            >Enviar
-            </button>
-       
-        </div>
+                      
+                <Button
 
-     </form>
+                    classNameValue = { "btn btn-danger btn-block pull-right" }
+                    nameAndType = { "submit" }
+                    textValue = { "Enviar" }
+                    isDisabled = { isDisabled }
+
+                />  
+
+        
+            
+
+        </form>
+
    </div>
+
   </div>
+
     )
 }
 

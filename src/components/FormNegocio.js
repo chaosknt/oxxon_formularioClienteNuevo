@@ -13,6 +13,7 @@ import Label from './formComponents/Label';
 import Button from './formComponents/Button';
 import Span from './formComponents/Span';
 import Title from './formComponents/Title';
+import { titles } from '../strings/titles';
 
 const FormNegocio = ({ razon_social, 
                        condicion_venta,
@@ -77,7 +78,7 @@ const FormNegocio = ({ razon_social,
                 
                 <form onSubmit = { handleNext }>              
                     
-                    <Title text = { "Datos del negocio" } />
+                    <Title text = { titles.Negocio } />
 
                     {showError.hasError && 
                             <div class="alert alert-danger text-center" role="alert">
@@ -89,11 +90,12 @@ const FormNegocio = ({ razon_social,
 
                         idValue = { "razon_social"  }                           
                         placeholderValue = { "Ingrese el nombre de su negocio"  }
+                        labelValue = { "Razón social"}
                         typeValue = { "text" }
                         inputValue = { razon_social }
-                        onChangeFunction = { setFormNegocio }                        
+                        onChangeFunction = { setFormNegocio }    
                         
-                    />      
+                    />                          
 
                     <Select2
                     

@@ -1,13 +1,14 @@
 import React from 'react'
 import Label from './Label'
+import Span from './Span'
 
-const Input = ({ idValue, placeholderValue, typeValue, inputValue, onChangeFunction}) => {
+const Input = ({ idValue, placeholderValue, typeValue, inputValue, onChangeFunction, textSpan, labelValue}) => {
     return (
       
         <div className="form-group col-lg-6">   
 
             <Label
-                    text = { idValue }
+                    text = { labelValue }
             />
 
             <input 
@@ -21,6 +22,8 @@ const Input = ({ idValue, placeholderValue, typeValue, inputValue, onChangeFunct
                 onChange = { onChangeFunction }
             
             />
+
+            <Span text = { textSpan } />
 
         </div> 
 
