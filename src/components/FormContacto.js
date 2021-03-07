@@ -1,11 +1,16 @@
-import React from 'react'
-
+import React, { useState } from 'react'
+import isEmail from 'validator/lib/isEmail';
 const FormContacto = ({ email,
                         telefono, 
                         setFormContacto,                       
                         setContact, 
                         setDelivery 
                       }) => {
+    
+    const [showError, setShowError] = useState({
+      hasError: false,
+      showErrMsg:''
+    });
 
     const handleNext = ( e ) => {
         e.preventDefault();
@@ -16,9 +21,20 @@ const FormContacto = ({ email,
         }
         
     }
-
+       
     const isFormValid = () => {
 
+      if( !isEmail(email) )
+      {
+        setShowError({...showError, hasError:true, showErrMsg:"Ha ingresado un email no válido."});
+            return false;
+      }
+
+      if( telefono.length < 8 )
+      {
+        setShowError({...showError, hasError:true, showErrMsg:"Ha ingresado un teléfono no válido."});
+            return false;
+      }
           
       return true;
   }  
@@ -30,6 +46,12 @@ const FormContacto = ({ email,
         <form onSubmit = { handleNext }>                
         <h3 className="base__formTittle">Datos de Contacto</h3>
         <hr className="base__hr"></hr>
+
+        {showError.hasError && 
+                            <div class="alert alert-danger text-center" role="alert">
+                                    {showError.showErrMsg}
+                            </div>
+        }
         
         <div className="form-group col-lg-6">
 
@@ -56,7 +78,7 @@ const FormContacto = ({ email,
             <span 
               className="help-block"
               id="hint_number"
-            >Ingrese un email al que tenga acceso para realizar la verificación.
+            > Ingrese un email al que tenga acceso para realizar la verificación.
             </span>
 
         </div>

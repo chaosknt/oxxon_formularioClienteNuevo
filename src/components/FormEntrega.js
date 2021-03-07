@@ -5,9 +5,7 @@ import Select from 'react-select'
 const FormEntrega = ({   direccion,                          
                          entre_calles, 
                          setFormEntrega, 
-                         updateLocalidad,
-                         setContact, 
-                         setDelivery,
+                         updateLocalidad,                         
                          handleForm                         
                     }) => {
     
@@ -88,7 +86,7 @@ const FormEntrega = ({   direccion,
             
                           <Select 
                           isLoading={true}
-                          placeholder = "Seleccione una Localidad"
+                          placeholder = "Seleccione o busque una Localidad"
                           options={localidades}                           
                           id="localidad" 
                           name="localidad"

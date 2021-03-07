@@ -27,8 +27,6 @@ const App = () => {
         rubro:''
     });
     
-    console.log(rubro.rubro)
-
     const updateRubro = ({ value }) => {
         setRubro({...rubro, rubro:value})
     }    

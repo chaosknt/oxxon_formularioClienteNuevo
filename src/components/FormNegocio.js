@@ -50,7 +50,7 @@ const FormNegocio = ({ razon_social,
             return false;
         }
 
-        if(rubro.rubro.length === 0 || rubro.rubro === "Seleccione un rubro")
+        if(rubro.rubro.length === 0 || rubro.rubro === "Seleccione o busque un rubro")
         {
             setShowError({...showError, hasError:true, showErrMsg:"Debe elegir un rubro."});
             return false;
@@ -193,7 +193,7 @@ const FormNegocio = ({ razon_social,
                         
                          <Select
                           isLoading={true}
-                          placeholder = "Seleccione un rubro"
+                          placeholder = "Seleccione o busque un rubro"
                           options={ rubros }                           
                           id="rubro" 
                           name="rubro"                         
