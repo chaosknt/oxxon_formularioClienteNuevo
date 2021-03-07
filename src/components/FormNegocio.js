@@ -1,8 +1,18 @@
 import React, { useState } from 'react'
+
 import condicionVenta from '../data/condicionVenta';
 import rubros from '../data/rubro';
+import { errMsg } from '../strings/errMsg';
+
 import Select from 'react-select'
 import InputMask from "react-input-mask";
+
+import Input from './formComponents/Input';
+import Select2 from './formComponents/Select';
+import Label from './formComponents/Label';
+import Button from './formComponents/Button';
+import Span from './formComponents/Span';
+import Title from './formComponents/Title';
 
 const FormNegocio = ({ razon_social, 
                        condicion_venta,
@@ -14,12 +24,12 @@ const FormNegocio = ({ razon_social,
                        setContact
                     }) => {
 
-    const [showError, setShowError] = useState({
-        hasError: false,
-        showErrMsg:''
-    })
+    const [showError, setShowError] = useState( { hasError: false, showErrMsg:''} );
+
+    const { err_razon_social, err_condicion_venta, err_cuit, err_rubro } = errMsg;
 
     const handleNext = ( e ) => {
+        
         e.preventDefault();       
         if( isFormValid() )
         {
@@ -34,25 +44,25 @@ const FormNegocio = ({ razon_social,
 
         if(razon_social.trim().length === 0)
         {
-            setShowError({...showError, hasError:true, showErrMsg:"El campo Razon social es incorrecto."});
+            setShowError( {...showError, hasError:true, showErrMsg: err_razon_social } );
             return false;
         }
 
         if(condicion_venta.trim().length === 0 || condicion_venta === "Condición de venta")
         {
-            setShowError({...showError, hasError:true, showErrMsg:"Debe elegir una condició de venta."});
+            setShowError( {...showError, hasError:true, showErrMsg: err_condicion_venta } );
             return false;
         }
 
         if(cuit.replace(/_|-|/gi, "" ).length < 10)
         {
-            setShowError({...showError, hasError:true, showErrMsg:"El Cuit ingresado debe tener 11 (once) caracteres"});
+            setShowError( {...showError, hasError:true, showErrMsg: err_cuit } );
             return false;
         }
 
         if(rubro.rubro.length === 0 || rubro.rubro === "Seleccione o busque un rubro")
         {
-            setShowError({...showError, hasError:true, showErrMsg:"Debe elegir un rubro."});
+            setShowError( {...showError, hasError:true, showErrMsg: err_rubro } );
             return false;
         }
 
@@ -62,135 +72,71 @@ const FormNegocio = ({ razon_social,
     return (
 
         <div className="container-fluid row animate__animated animate__zoomIn base__mainContent">
+
             <div className="col-md-12 col-sm-12 col-xs-12">
                 
-                <form onSubmit = { handleNext }>                
-                    <h3 className="base__formTittle">Datos del negocio</h3>
-                    <hr className="base__hr" /> 
+                <form onSubmit = { handleNext }>              
+                    
+                    <Title text = { "Datos del negocio" } />
+
                     {showError.hasError && 
                             <div class="alert alert-danger text-center" role="alert">
                                     {showError.showErrMsg}
                             </div>
                     }
                     
-                    <div className="form-group col-lg-6">
+                    <Input 
 
-                        <label 
-                            className="control-label requiredField"                            
-                        > Raz&oacute;n social
-                            <span 
-                                className="base__asteriskField"
-                            >*
-                            </span>
-                        </label>
+                        idValue = { "razon_social"  }                           
+                        placeholderValue = { "Ingrese el nombre de su negocio"  }
+                        typeValue = { "text" }
+                        inputValue = { razon_social }
+                        onChangeFunction = { setFormNegocio }                        
+                        
+                    />      
 
-                        <input 
-                            className="form-control"
-                            id="razon_social" 
-                            name="razon_social" 
-                            placeholder="Ingrese el nombre de su negocio" 
-                            type="text"
-                            value = { razon_social }
-                            onChange = { setFormNegocio }
-                        />
+                    <Select2
                     
-                    </div>                
+                        idValue = { "condicion_venta" }
+                        inputValue = { condicion_venta }
+                        onChangeFunction = { setFormNegocio  }
+                        selectValues = { condicionVenta }
+                        selectValueCondition = { "Condición de venta" }
+                    />                            
 
+                    {/* Input with mask */}
                     <div 
                         className="form-group col-lg-6"
                     >
 
-                        <label 
-                            className="control-label requiredField"                           
-                        >Seleccione una opci&oacute;n
+                        <Label text = { "Cuit" } />
 
-                        <span 
-                            className="base__asteriskField"
-                        >*
-                        </span>
-                        </label>
-
-                    <select 
-                        className="select form-control" 
-                        id="condicion_venta"
-                        name="condicion_venta"
-                        value = { condicion_venta }
-                        onChange = { setFormNegocio }
-                    >
-                        {
-                           condicionVenta.map(condicion => (                           
-                               <option value = 
-                               { condicion === "Condición de venta" ? 
-                                                '' :
-                                                 condicion 
-                                                 }>
-                                   { condicion }
-                               </option>
-                           )) 
-                        }
-                                      
-                    </select>
-                    </div>         
-
-                    <div 
-                        className="form-group col-lg-6"
-                    >
-
-                        <label 
-                            className="control-label requiredField"
-                           
-                        >Cuit
-
-                            <span 
-                                className="base__asteriskField"
-                            >*
-                            </span>
-                        </label>
-{/*
-                        <input 
-                            className="form-control" 
-                            id="cuit" 
-                            name="cuit" 
-                            placeholder="99999999999"
-                            type="number"
-                            value = { cuit }
-                            onChange = { setFormNegocio }                            
-/>*/}
                         <InputMask
-                        className="form-control" 
-                        placeholder="Ingrese su número de cuit"
-                        id="cuit" 
-                        name="cuit"
-                        value = { cuit }
-                        onChange = { setFormNegocio }
-                        mask="99-99999999-9"
-                        
-                          />
 
-                        
+                            className = "form-control" 
+                            placeholder = "Ingrese su número de cuit"
+                            id = "cuit" 
+                            name = "cuit"
+                            value = { cuit }
+                            onChange = { setFormNegocio }
+                            mask = "99-99999999-9"
 
-                        <span 
-                            className="help-block" 
-                            id="hint_number"
-                        > Ingrese los once d&iacute;gitos sin espacios ni guiones
-                        </span>
+                          />                       
+                       
+                       <Span text = { "Ingrese los once dígitos sin espacios ni guiones" } />
+
                     </div>
-
+                    
+                    {/* Select with Search  */}
                     <div 
                         className="form-group col-lg-6"
-                    >
+                    >                      
 
-                        <label 
-                            className="control-label requiredField" 
-                            for="rubro"
-                        >Seleccione una opci&oacute;n
-                        <span 
-                            className="base__asteriskField"
-                        >*
-                        </span>
-                        </label>
-                       
+                        <Label 
+                            text = { "Seleccione una opción" }
+                        />
                         
+                       
                          <Select
                           isLoading={true}
                           placeholder = "Seleccione o busque un rubro"
@@ -198,45 +144,23 @@ const FormNegocio = ({ razon_social,
                           id="rubro" 
                           name="rubro"                         
                           onChange = { updateRubro }
-                        />
-                        
-
-                    {/*<select 
-                        className="select form-control" 
-                        id="rubro"
-                        name="rubro"
-                        value = { rubro }
-                        onChange = { setFormNegocio }
-                    >
-                        {
-                           rubros.map(({value,label}) => (                           
-                               <option value = 
-                               { label
-                                                 }>
-                                   { value }
-                               </option>
-                           )) 
-                        }                                      
-                    </select>*/}
-                        
+                        />                        
+                                           
                     </div>           
 
-                    <div 
-                        className="form-group col-lg-6"
-                    >                        
-                        <button 
-                            className="btn btn-danger btn-block" 
-                            name="submit"
-                            type="submit"
-                            value = "Siguiente"
-                            disabled = { isFormValid }
-                        >Siguiente
-                        </button>
-                        
-                    </div>
+                    <Button
+
+                        classNameValue = { "btn btn-danger btn-block" }
+                        nameAndType = { "submit" }
+                        textValue = { "Siguiente" }
+                        isDisabled = { isFormValid }
+
+                    />                    
 
                 </form>
+
             </div>
+
         </div>
 
     )
