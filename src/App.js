@@ -1,10 +1,19 @@
+//#region Imports
 import React, { useState } from 'react'
+import axios from 'axios';
+
+import { useForm } from './hooks/useForm'
+
 import FormContacto from './components/FormContacto'
 import FormEntrega from './components/FormEntrega'
 import FormNegocio from './components/FormNegocio'
-import { useForm } from './hooks/useForm'
-import axios from 'axios';
+import EndForm from './components/EndForm'
 
+import { titles } from './strings/titles'
+import { endPoints } from './endPoints/endPoints';
+import { succMsg } from './strings/succMsg';
+
+//#endregion
 
 /*
 LIBRERIAS
@@ -15,8 +24,10 @@ saas npm i sass
 Axios npm i axios
 */
 const App = () => {
+
+    const [mainTitle, setMainTitle] = useState(titles.completa);
              
-    //formulario de negocio
+    //#region Formulario de negocio
     const [business, setBusiness ] = useState(true);
     const [formNegocio, setFormNegocio] = useForm({
         razon_social: '',
@@ -32,18 +43,21 @@ const App = () => {
     
     const updateRubro = ({ value }) => {
         setRubro({...rubro, rubro:value})
-    }    
+    }  
     
-    //formulario de contacto
+    //#endregion
+    
+    //#region Formulario de contacto
     const [contact, setContact] = useState(false)
     const [formContacto, setFormContacto] = useForm({
         email: '',
         telefono: ''
     });
-
-    const { email, telefono } = formContacto;
     
-    //formulario de entrega
+    const { email, telefono } = formContacto;
+    //#endregion
+    
+    //#region  Formulario de entrega
     const [delivery, setDelivery] = useState(false)
     const [formEntrega, setFormEntrega] = useForm({
         direccion:'',        
@@ -58,12 +72,29 @@ const App = () => {
 
     const updateLocalidad = ( { value }) => {
         setLocalidad({ ...localidad, localidad: value })
-    }
+    };
 
-     //Add into DB    
+    //#endregion
+    
+    //#region Formulario Finalizar registro
+    const [endForm, setEndForm] = useState({
+            status: false,
+            title: titles.NoEnviado,
+            msg: 'Hubo un error y no se ha podido enviar el formulario, por favor intente de nuevo o escriba a pedidos@oxxon-cd.com',
+            alertClassName: 'alert alert-danger text-center mt-5 mb-5',
+            buttonClassName: 'btn btn-outline-danger',
+            buttonText: 'Volver a cagar datos',
+            buttonLink: 'http://oxxon-cd.com/clientes',           
+    });
+      
+    const { title, msg, alertClassName, buttonClassName, buttonText, buttonLink, showConfirmationForm } = endForm;
+    
+    //#endregion
+
+     //#region Ingresar datos via API a la base de datos
     const handleForm = async () => {
         
-       const baseUrl = 'http://localhost/oxxon/Apis/FormClienteNuevo/';
+       const baseUrl = endPoints.INSERT_DATA_INTO_DB;
 
        const  completedForm = { ...formNegocio, 
                                 ...rubro, 
@@ -76,9 +107,25 @@ const App = () => {
         handleFormData(completedForm, f);      
 
         const response =  await axios.post(baseUrl, f);
-            
+                
+        if(response.status === 200){
+            setDelivery(false);
+            setEndForm({...endForm, 
+                status: true,
+                title: titles.Enviado,
+                msg: succMsg.succ_confirmacion,
+                alertClassName: 'alert alert-success text-center mt-5 mb-5',
+                buttonClassName: 'btn btn-outline-success',
+                buttonText: 'Volver al menú principal',
+                buttonLink: 'http://oxxon-cd.com/'
+            });
+            setMainTitle(titles.finalizado);            
+        }else
+        {
+            setEndForm({...endForm, status: true });       
+        }
        
-    }
+    };
 
     const handleFormData = ( completedForm, f) => {
 
@@ -92,15 +139,18 @@ const App = () => {
         f.append("condicion_venta", completedForm.condicion_venta);
         f.append("email", completedForm.email);
         f.append("METHOD", "POST");
-    }
+    };
+
+    //#endregion
     
     return (
         <>
-            <h3 className="base__MainTittle">Completá tus datos</h3>
-            <div className="base__box">
+            <h3 className="base__MainTittle">{ mainTitle }</h3>
+              <div className="base__box">
                 
                 { business &&                     
                    <FormNegocio 
+
                         razon_social = { razon_social }
                         condicion_venta = { condicion_venta }
                         cuit = { cuit }   
@@ -114,17 +164,18 @@ const App = () => {
 
                 { contact &&  
                     <FormContacto
+
                          email = { email }
                          telefono = { telefono }
                          setFormContacto = { setFormContacto }         
                          setContact = { setContact }
                          setDelivery = { setDelivery }
                     />
-                }
-                
+                }                
                
                 { delivery &&  
                      <FormEntrega
+
                          direccion = { direccion }                         
                          entre_calles = { entre_calles }
                          setFormEntrega = { setFormEntrega }
@@ -133,7 +184,21 @@ const App = () => {
                          handleForm = { handleForm }
                          
                      />
-                }              
+                }     
+
+                { endForm.status &&
+                     <EndForm  
+
+                        title = { title }
+                        msg = { msg }
+                        alertClassName = { alertClassName }
+                        buttonClassName = { buttonClassName }
+                        buttonText = { buttonText }
+                        buttonLink = { buttonLink }
+                        showConfirmationForm = { showConfirmationForm }
+
+                     />
+                }         
                                
             </div>
     </>
