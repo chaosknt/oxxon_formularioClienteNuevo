@@ -150,6 +150,8 @@ const FormNegocio = ({ razon_social,
                                            
                     </div>           
 
+                    <div className="form-group col-lg- col-xs-6" />
+                    
                     <Button
 
                         classNameValue = { "btn btn-danger btn-block" }

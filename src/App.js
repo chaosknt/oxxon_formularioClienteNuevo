@@ -3,6 +3,8 @@ import FormContacto from './components/FormContacto'
 import FormEntrega from './components/FormEntrega'
 import FormNegocio from './components/FormNegocio'
 import { useForm } from './hooks/useForm'
+import axios from 'axios';
+
 
 /*
 LIBRERIAS
@@ -10,9 +12,10 @@ select 2 npm i --save react-select
 validator npm i --save react-select
 input  npm install react-input-mask --save
 saas npm i sass
+Axios npm i axios
 */
 const App = () => {
-                      
+             
     //formulario de negocio
     const [business, setBusiness ] = useState(true);
     const [formNegocio, setFormNegocio] = useForm({
@@ -56,18 +59,39 @@ const App = () => {
     const updateLocalidad = ( { value }) => {
         setLocalidad({ ...localidad, localidad: value })
     }
-     //formulario completo
-    
-    const handleForm = () => {
+
+     //Add into DB    
+    const handleForm = async () => {
+        
+       const baseUrl = 'http://localhost/oxxon/Apis/FormClienteNuevo/';
+
        const  completedForm = { ...formNegocio, 
                                 ...rubro, 
                                 ...localidad,
                                 ...formContacto,
                                 ...formEntrega,                                                              
                                 };
+        let f = new FormData();
 
-       console.log(completedForm)
+        handleFormData(completedForm, f);      
+
+        const response =  await axios.post(baseUrl, f);
+            
        
+    }
+
+    const handleFormData = ( completedForm, f) => {
+
+        f.append("razon_social", completedForm.razon_social);
+        f.append("cuit", completedForm.cuit);
+        f.append("localidad", completedForm.localidad);
+        f.append("direccion", completedForm.direccion);
+        f.append("entre_calles", completedForm.entre_calles);
+        f.append("telefono", completedForm.telefono);
+        f.append("rubro", completedForm.rubro);
+        f.append("condicion_venta", completedForm.condicion_venta);
+        f.append("email", completedForm.email);
+        f.append("METHOD", "POST");
     }
     
     return (
